@@ -31,8 +31,9 @@ I like woman
 ```
 ###配合命令替换
 命令替换即\` \`和$( )两种操作符的使用。命令替换配合for循环很常见。  
-比如我系统的用户叫做**jelly**，现在我新建了一个叫做**guodong**的用户。但是guodong用户缺少很多组权限。  
-我想让guodong拥有jelly所在的全部组。那么我可以这样：
+比如我系统的用户叫做**jelly**，现在我新建了一个叫做**guodong**的用户。
+但是guodong用户缺少很多组权限。我想让guodong拥有jelly所在的全部组。  
+那么我可以这样：
 ```shell
 for var in `groups jelly`
 do
@@ -74,7 +75,8 @@ done
     seq 首数 [增量] 末数
 
 请注意增量的位置在中间，这与前面提到的花括号不同。  
-来看一个例子（*改编自《Shell Scripting》P114*）ping一下局域网内的主机：
+来看一个例子（*改编自《Shell Scripting Expert Recipes for Linux,Bash,and More》P114*）  
+用脚本来ping一下局域网内的主机：
 ```shell
 #!/bin/bash
 PREFIX=192.168.1.
