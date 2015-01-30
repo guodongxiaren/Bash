@@ -89,5 +89,34 @@ done
 ##while与重定向
 while语句可以联合重定向（>和<）一起使用。
 ###while和输入重定向<
-比如从一个文件内部读入。
+格式为
+```sh
+while 命令
+do
+    循环体
+done < 文件名
+```
+相当于将文件内容逐行传递给while后面的命令(类似管道)，然后再执行循环体。  
+当**循环体为空**的时候，这个结构的功能**通常**和cat没有两样，比如：
+```sh
+while grep "love"
+do
+done < letter
+```
+从文件letter中查找love这个单词，其实和cat letter|grep "love"没什么两样。
+
+这个结构更习惯的用法和read联用，来将文件内容逐行赋值给read后面的变量。
+```sh
+while read var
+do
+    echo $var 
+done < file
+```
 ###while和输出重定向>
+格式为
+```sh
+while 命令
+do
+    循环体
+done > 文件名
+```
