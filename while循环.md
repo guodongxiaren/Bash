@@ -70,19 +70,23 @@ done
 根据不同的输入执行不同的操作，然后循环再次输出菜单……。  
 bash中没有do-while风格的循环，但是我们很容易用替代的方案实现该功能。用死循环+if/case条件判断语句就够了。  
 ```sh
+#!/bin/bash
 #菜单demo
 while :
 do
-    echo "1：输出成绩单"
-	echo "2：输出课程表"
-	echo "3：输出空闲教室"
-	echo "q或Q：退出菜单"
-	read input
-	case input in
-	    1)echo "稍等，正在为您";;
-		1)echo "稍等，正在为您";;
-		1)echo "稍等，正在为您";;
-		1)echo "稍等，正在为您";;
+    echo   #输出空行
+    echo "========================="
+    echo "      1：输出成绩单"
+	echo "      2：输出课程表"
+	echo "      3：输出空闲教室"
+	echo "      q：退出菜单"
+    echo "========================="
+	read -p"请输入：" input
+	case $input in
+	    1)echo "稍等，正在为您输出成绩单";;
+		2)echo "稍等，正在为您输出课程表";;
+		3)echo "稍等，正在为您输出空闲教";;
+		q|Q) exit
 	esac
 done
 ```
