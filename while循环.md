@@ -44,7 +44,9 @@ while read var;do
     echo "您输入的是$var"
 done
 ```
-这个程序是个死循环，将不停地等待您的输入，并回显出来。
+这个程序是个死循环，将不停地等待您的输入，并回显出来。  
+
+**这里的命令可以是单个命令也可以是组合命令，比如用逻辑连接符连接的命令，或者管道、重定向组成的长命令**
 ###死循环
 除了让while条件恒成立外，编程语言都有一种简洁的死循环写法。比如C语言中典型的死循环条件是while(1)，而java中的写法是while(true)。  
 而Bash中的写法则简单的多，只需要一个冒号。
@@ -109,13 +111,23 @@ done < letter
 ```
 从文件letter中查找love这个单词，其实和cat letter|grep "love"没什么两样。
 
-这个结构更习惯的用法和read联用，来将文件内容逐行赋值给read后面的变量。
+这个结构更习惯的用法和read联用，来将文件内容逐行取出，赋值给read后面的变量。比如：
 ```sh
-while read var
+#!/bin/bash
+#从/etc/passwd文件中读取用户名并输出
+oldIFS=$IFS #IFS是文件内部分隔符
+IFS=":"     #设置分隔符为:
+while  read username var #var变量不可少
 do
-    echo $var 
-done < file
+    echo "用户名:$username"
+done < /etc/passwd 
+IFS=$oldIFS
 ```
+熟悉**/etc/passwd**文件结构的朋友都知道这个文件的每一行包含了一个用户的大量信息（用户名只是第一项）。   
+这里我们实际只输出了用户名。但是注意while的read后面除变量username外还有个var，尽管我们并不输出这个变量的值。
+但它却必不可少，如果我们写成`while read username`那么username的值等于passwd文件这一整行的内容（IFS=":"也就不起作用了）  
+>bash中，只有当有多个变量要从一行文本赋值的时候，才尝试去用IFS来分割，然后赋值。
+
 ###while和输出重定向>
 格式为
 ```sh
@@ -124,3 +136,26 @@ do
     循环体
 done > 文件名
 ```
+这个结构会将命令的输出，以及循环体中的标准输出都重定向到指定的文件中。  
+比如：
+```sh
+#!/bin/bash
+#每隔10分钟，ping一下局域网内主机192.168.1.101，
+#并把结果记录到ping.txt文件中
+while date
+do
+    ping -c5 192.168.1.101 >/dev/null 2>&1 
+    if [ $? = 0 ];then
+        echo OK
+    else
+        echo FAIL
+    fi
+    sleep 600 #600秒是10分钟
+done > ping.txt
+```
+我们来cat一下ping.txt文件，看一看：
+```sh
+2015年 01月 31日 星期六 16:03:13 CST
+OK
+```
+这是ping.txt中的一条记录
